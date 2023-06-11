@@ -3,6 +3,13 @@ package com.anabank.anabank.utils;
 import java.time.Year;
 
 public class AccountUtils {
+
+    public static final String ACCOUNT_EXISTS_CODE = "001";
+    public static final String ACCOUNT_EXISTS_MESSAGE = "This user already has an account created!!!";
+    public static final String ACCOUNT_CREATION_SUCCESS_CODE = "002";
+    public static final String ACCOUNT_CREATION_SUCCESS_MESSAGE = "Account successfully created";
+
+
     /*
     For my account number builder assuming i have a 10-digit account number
     I want to build an account stating with 2023 + randomSixDigits
