@@ -8,7 +8,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
     by referencing the primary key id(Long)
  */
 public interface UserRepository extends JpaRepository<User, Long> {
-
-    Boolean existByEmail(String email);
-
+    Boolean existsByEmail(String email);
 }
