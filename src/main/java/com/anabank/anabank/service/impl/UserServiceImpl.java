@@ -2,6 +2,7 @@ package com.anabank.anabank.service.impl;
 
 import com.anabank.anabank.dto.AccountInfo;
 import com.anabank.anabank.dto.BankResponse;
+import com.anabank.anabank.dto.EmailDetails;
 import com.anabank.anabank.dto.UserRequest;
 import com.anabank.anabank.entity.User;
 import com.anabank.anabank.repository.UserRepository;
@@ -16,6 +17,9 @@ public class UserServiceImpl implements UserService{
 
     @Autowired
     UserRepository userRepository;
+
+    @Autowired
+    EmailService emailService;
     @Override
     public BankResponse createAccount(UserRequest userRequest) {
         /**
@@ -47,6 +51,21 @@ public class UserServiceImpl implements UserService{
 
         //save user into the database.
         User savedUser = userRepository.save(newUser);
+        //send email alert for account creation to user
+        EmailDetails emailDetails = EmailDetails.builder()
+                .recipient(savedUser.getEmail())
+                .subject(AccountUtils.ACCOUNT_CREATION_EMAIL_SUBJECT)
+                .messageBody(
+                        "Congratulations! Your Account has been Successfully Created. \n " +
+                                "Your Account Details: \n" +
+                                "Account Name: " + savedUser.getFirstName() + " " + savedUser.getLastName() + " " +
+                                savedUser.getOtherName() + " \n " +
+                                "Account Number: " + savedUser.getAccountNumber()
+                )
+                .build();
+        emailService.sendEmailAlert(emailDetails);
+
+
         return BankResponse.builder()
                 .responseCode(AccountUtils.ACCOUNT_CREATION_SUCCESS_CODE)
                 .responseMessage(AccountUtils.ACCOUNT_CREATION_SUCCESS_MESSAGE)

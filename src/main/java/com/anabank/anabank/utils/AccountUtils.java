@@ -9,6 +9,8 @@ public class AccountUtils {
     public static final String ACCOUNT_CREATION_SUCCESS_CODE = "002";
     public static final String ACCOUNT_CREATION_SUCCESS_MESSAGE = "Account successfully created";
 
+    public static final String ACCOUNT_CREATION_EMAIL_SUBJECT = "ACCOUNT CREATION";
+
 
     /*
     For my account number builder assuming i have a 10-digit account number

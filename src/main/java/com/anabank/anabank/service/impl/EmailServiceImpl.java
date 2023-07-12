@@ -1,5 +1,6 @@
 package com.anabank.anabank.service.impl;
 
+import com.anabank.anabank.configuration.MailConfiguration;
 import com.anabank.anabank.dto.EmailDetails;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -13,15 +14,15 @@ public class EmailServiceImpl implements EmailService{
     @Autowired
     private JavaMailSender javaMailSender;
 
-    @Value("${spring.mail.username}")
-    private String senderEmail;
+//    @Value("${spring.mail.username}")
+//    private String senderEmail;
 
 
     @Override
     public void sendEmailAlert(EmailDetails emailDetails) {
         try{
             SimpleMailMessage mailMessage = new SimpleMailMessage();
-            mailMessage.setFrom(senderEmail);
+            mailMessage.setFrom("afamnwakuwa2@gmail.com");
             mailMessage.setTo(emailDetails.getRecipient());
             mailMessage.setText(emailDetails.getMessageBody());
             mailMessage.setSubject(emailDetails.getSubject());
