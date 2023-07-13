@@ -1,9 +1,6 @@
 package com.anabank.anabank.service.impl;
 
-import com.anabank.anabank.dto.AccountInfo;
-import com.anabank.anabank.dto.BankResponse;
-import com.anabank.anabank.dto.EmailDetails;
-import com.anabank.anabank.dto.UserRequest;
+import com.anabank.anabank.dto.*;
 import com.anabank.anabank.entity.User;
 import com.anabank.anabank.repository.UserRepository;
 import com.anabank.anabank.utils.AccountUtils;
@@ -75,5 +72,41 @@ public class UserServiceImpl implements UserService{
                         .accountName(savedUser.getFirstName() + " " + savedUser.getOtherName() + " " + savedUser.getLastName())
                         .build())
                 .build();
+    }
+
+    @Override
+    public BankResponse balanceEnquiry(EnquiryRequest request) {
+        //check if account exists in database
+        boolean isAccountExists = userRepository.existsByAccountNumber(request.getAccountNumber());
+        if (!isAccountExists){
+            return BankResponse.builder()
+                    .responseCode(AccountUtils.ACCOUNT_NOT_EXISTS_CODE)
+                    .responseMessage(AccountUtils.ACCOUNT_NOT_EXISTS_MESSAGE)
+                    .accountInfo(null)
+                    .build();
+        }
+        //Account Exists
+        User foundUser = userRepository.findByAccountNumber(request.getAccountNumber());
+        return BankResponse.builder()
+                .responseCode(AccountUtils.ACCOUNT_FOUND_CODE)
+                .responseMessage(AccountUtils.ACCOUNT_FOUND_MESSAGE)
+                .accountInfo(AccountInfo.builder()
+                        .accountBalance(foundUser.getAccountBalance())
+                        .accountNumber(request.getAccountNumber())
+                        .accountName(foundUser.getFirstName() + " " + foundUser.getLastName() + " " + foundUser.getOtherName())
+                        .build())
+                .build();
+
+    }
+
+    @Override
+    public String nameEnquiry(EnquiryRequest request) {
+        //check if account exists in database
+        boolean isAccountExists = userRepository.existsByAccountNumber(request.getAccountNumber());
+        if (!isAccountExists){
+           return AccountUtils.ACCOUNT_NOT_EXISTS_CODE;
+        }
+        User foundUser = userRepository.findByAccountNumber(request.getAccountNumber());
+        return foundUser.getFirstName() + " " + foundUser.getLastName() + " " + foundUser.getOtherName();
     }
 }
