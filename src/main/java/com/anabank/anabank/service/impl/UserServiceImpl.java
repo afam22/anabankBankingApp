@@ -104,7 +104,7 @@ public class UserServiceImpl implements UserService{
         //check if account exists in database
         boolean isAccountExists = userRepository.existsByAccountNumber(request.getAccountNumber());
         if (!isAccountExists){
-           return AccountUtils.ACCOUNT_NOT_EXISTS_CODE;
+           return AccountUtils.ACCOUNT_NOT_EXISTS_MESSAGE;
         }
         User foundUser = userRepository.findByAccountNumber(request.getAccountNumber());
         return foundUser.getFirstName() + " " + foundUser.getLastName() + " " + foundUser.getOtherName();
